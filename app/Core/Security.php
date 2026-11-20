@@ -1,0 +1,3 @@
+<?php
+namespace App\Core;
+final class Security{public static function e(mixed $v):string{return htmlspecialchars((string)$v,ENT_QUOTES,'UTF-8');}public static function csrf():string{if(empty($_SESSION['_csrf']))$_SESSION['_csrf']=bin2hex(random_bytes(32));return $_SESSION['_csrf'];}public static function validCsrf(?string $v):bool{return is_string($v)&&hash_equals((string)($_SESSION['_csrf']??''),$v);}public static function redirect(string $page):never{header('Location: '.BASE_URL.'/?page='.rawurlencode($page));exit;}public static function flash(string $type,string $msg):void{$_SESSION['_flash'][]=[$type,$msg];}public static function flashes():array{$f=$_SESSION['_flash']??[];unset($_SESSION['_flash']);return $f;}}
